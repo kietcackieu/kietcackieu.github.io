@@ -3,10 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kietsu • magnetic stardust</title>
+  <title>kietsu • profile</title>
+  
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   
   <style>
-    /* Ẩn con trỏ chuột mặc định */
+    /* Ẩn con trỏ mặc định */
     * {
       margin: 0;
       padding: 0;
@@ -16,27 +22,132 @@
 
     body {
       background-color: #030305;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
       position: relative;
+      perspective: 1000px;
     }
 
-    /* CANVAS HẠT SÁNG HÚT VỀ CON TRỎ CHUỘT (SIÊU MƯỢT, 0% LAG) */
+    /* CANVAS HẠT SÁNG HÚT THEO CHUỘT (CHILL & 0% LAG) */
     #gravityCanvas {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
+      pointer-events: none;
     }
 
-    /* LỚP PHỦ MỜ TỐI HUYỀN BÍ */
+    /* LỚP PHỦ TỐI HUYỀN BÍ */
     .vignette-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, transparent 40%, rgba(3, 3, 5, 0.88) 100%);
+      background: radial-gradient(circle at center, transparent 30%, rgba(3, 3, 5, 0.9) 100%);
       z-index: 1;
       pointer-events: none;
+    }
+
+    /* ==================== CARD PROFILE CHÍNH (NGHIÊNG 3D THEO CHUỘT) ==================== */
+    .profile-card {
+      position: relative;
+      z-index: 10;
+      width: 380px;
+      max-width: 90vw;
+      background: rgba(14, 16, 24, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px;
+      padding: 38px 28px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255, 255, 255, 0.03);
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out, border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .profile-card:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 35px 70px -10px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.06);
+    }
+
+    /* AVATAR TRÒN VIỀN PHÁT SÁNG */
+    .avatar-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      padding: 2.5px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.15));
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+      transform: translateZ(25px); /* Nổi 3D */
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #000000;
+    }
+
+    /* TÊN HIỂN THỊ PHÁT SÁNG (GLOW TITLE) */
+    .profile-name {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transform: translateZ(20px);
+    }
+
+    .verified-badge {
+      color: #06b6d4;
+      font-size: 16px;
+      filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.6));
+    }
+
+    /* NÚT JOIN SERVER DISCORD SIÊU ĐẸP */
+    .btn-discord {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 20px;
+      background: #5865F2; /* Màu Discord nguyên bản */
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(88, 101, 242, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateZ(28px);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 6px;
+    }
+
+    .btn-discord:hover {
+      background: #4752c4;
+      transform: translateZ(35px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(88, 101, 242, 0.6), 0 0 20px rgba(88, 101, 242, 0.4);
+    }
+
+    .btn-discord i {
+      font-size: 18px;
     }
 
     /* CON TRỎ CHUỘT CUSTOM */
@@ -60,15 +171,22 @@
       left: 0;
       width: 32px;
       height: 32px;
-      border: 1.5px solid rgba(255, 255, 255, 0.75);
+      border: 1.5px solid rgba(255, 255, 255, 0.7);
       border-radius: 50%;
       pointer-events: none;
       z-index: 99998;
       transform: translate(-50%, -50%);
-      transition: width 0.18s, height 0.18s;
+      transition: width 0.18s, height 0.18s, background-color 0.18s;
     }
 
-    /* Hạt sáng bay ra từ chuột */
+    body.cursor-hover #cursorRing {
+      width: 48px;
+      height: 48px;
+      border-color: #5865F2;
+      background: rgba(88, 101, 242, 0.15);
+    }
+
+    /* Hạt bụi sáng rơi ra từ chuột */
     .mouse-sparkle {
       position: fixed;
       width: 3.5px;
@@ -83,31 +201,62 @@
     }
 
     @keyframes fadeUpSparkle {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -20px) scale(0.2);
-      }
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -20px) scale(0.2); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Canvas Hạt Sáng Hút Về Hướng Chuột -->
+  <!-- NỀN HẠT SÁNG HÚT VỀ CON TRỎ CHUỘT (CHILL & 0% LAG) -->
   <canvas id="gravityCanvas"></canvas>
-
   <div class="vignette-overlay"></div>
 
-  <!-- Con trỏ chuột -->
+  <!-- ==================== PROFILE CARD CHÍNH ==================== -->
+  <div id="profileCard" class="profile-card">
+    
+    <!-- 1. AVATAR -->
+    <div class="avatar-wrapper">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.nf4kSleL1zj3tRNJg_fx5AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
+    </div>
+
+    <!-- 2. TÊN -->
+    <h1 class="profile-name">
+      <span>kaisu</span>
+      <i class="fa-solid fa-circle-check verified-badge" title="Verified Creator"></i>
+    </h1>
+
+    <!-- 3. NÚT JOIN DISCORD SERVER CỦA BẠN -->
+    <a href="https://discord.gg/8eBC2K4M3M" target="_blank" rel="noopener noreferrer" class="btn-discord" id="discordJoinBtn">
+      <i class="fa-brands fa-discord"></i>
+      <span>Tham gia Discord của tôi</span>
+    </a>
+
+  </div>
+
+  <!-- CON TRỎ CHUỘT CUSTOM -->
   <div id="cursorDot"></div>
   <div id="cursorRing"></div>
 
   <script>
     // ==========================================
-    // 1. HIỆU ỨNG HẠT SÁNG BAY VỀ PHÍA CHUỘT (MAGNETIC STARDUST)
+    // 1. HIỆU ỨNG NGHIÊNG 3D CARD KHI DI CHUỘT
+    // ==========================================
+    const card = document.getElementById('profileCard');
+
+    window.addEventListener('mousemove', (e) => {
+      const xRatio = (e.clientX / window.innerWidth) - 0.5;
+      const yRatio = (e.clientY / window.innerHeight) - 0.5;
+
+      // Độ nghiêng mượt mà tinh tế
+      const rotY = xRatio * 16;  // Nghiêng tối đa 8 độ sang trái/phải
+      const rotX = -yRatio * 16; // Nghiêng tối đa 8 độ lên/xuống
+
+      card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    });
+
+    // ==========================================
+    // 2. HIỆU ỨNG HẠT SÁNG HÚT VỀ CON TRỎ CHUỘT
     // ==========================================
     const canvas = document.getElementById('gravityCanvas');
     const ctx = canvas.getContext('2d');
@@ -123,7 +272,7 @@
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
 
-    const particleCount = 85;
+    const particleCount = 80;
     const particles = [];
 
     class Particle {
@@ -133,9 +282,9 @@
 
       reset(randomY = false) {
         this.x = Math.random() * width;
-        this.y = randomY ? Math.random() * height : height + Math.random() * 50;
+        this.y = randomY ? Math.random() * height : height + Math.random() * 40;
         this.vx = (Math.random() - 0.5) * 0.8;
-        this.vy = -(Math.random() * 1.5 + 0.8); // Hướng bay cơ bản từ dưới lên
+        this.vy = -(Math.random() * 1.5 + 0.8);
         this.size = Math.random() * 2.2 + 0.8;
         this.baseAlpha = Math.random() * 0.5 + 0.3;
         this.alpha = this.baseAlpha;
@@ -144,34 +293,26 @@
       }
 
       update() {
-        // Tính khoảng cách và góc tới con trỏ chuột
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const dist = Math.hypot(dx, dy);
 
-        // Lực hút từ trường nhẹ nhàng kéo hạt bay về hướng chuột
         if (dist > 15) {
           const force = Math.min(2.5, 90 / Math.max(dist, 60));
           this.vx += (dx / dist) * force * 0.06;
           this.vy += (dy / dist) * force * 0.06;
         }
 
-        // Lực nổi nhẹ từ dưới lên
         this.vy -= 0.04;
-
-        // Ma sát không khí giúp chuyển động mượt mà không bị văng loạn
         this.vx *= 0.95;
         this.vy *= 0.95;
 
-        // Cập nhật vị trí
         this.x += this.vx;
         this.y += this.vy;
 
-        // Hiệu ứng nhấp nháy lấp lánh
         this.twinkleAngle += this.twinkleSpeed;
         this.alpha = this.baseAlpha + Math.sin(this.twinkleAngle) * 0.18;
 
-        // Tái tạo lại ở đáy khi hạt bay quá gần chuột hoặc vượt ra ngoài màn hình
         if (dist < 18 || this.y < -30 || this.x < -40 || this.x > width + 40) {
           this.reset(false);
         }
@@ -185,16 +326,13 @@
       }
     }
 
-    // Khởi tạo các hạt
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
     }
 
     function animate() {
-      // Xóa nền đen mờ nhẹ tạo vệt chuyển động huyền ảo
       ctx.fillStyle = '#030305';
       ctx.fillRect(0, 0, width, height);
-
       ctx.fillStyle = '#ffffff';
 
       particles.forEach(p => {
@@ -208,7 +346,7 @@
     animate();
 
     // ==========================================
-    // 2. CON TRỎ CHUỘT CUSTOM & VỆT SÁNG
+    // 3. CON TRỎ CHUỘT CUSTOM MƯỢT MÀ
     // ==========================================
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
@@ -235,6 +373,11 @@
       requestAnimationFrame(renderCursor);
     }
     renderCursor();
+
+    // Hover effect vào nút Discord
+    const discordBtn = document.getElementById('discordJoinBtn');
+    discordBtn.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    discordBtn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 
     function createMouseSparkle(x, y) {
       const sp = document.createElement('div');
