@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bước 1: Nền Video / GIF & Chuột Custom • kietcackieu</title>
+  <title>kietsu • profile</title>
   
   <style>
-    /* 1. Ẩn con trỏ mặc định */
+    /* 1. Ẩn toàn bộ con trỏ mặc định */
     * {
       margin: 0;
       padding: 0;
@@ -15,45 +15,35 @@
     }
 
     body {
-      background-color: #000000;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #050508;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
       position: relative;
     }
 
-    /* 2. KHUNG CHỨA NỀN VIDEO HOẶC GIF TOÀN MÀN HÌNH */
-    .bg-container {
+    /* 2. NỀN VIDEO / GIF GẮN THẲNG TOÀN MÀN HÌNH */
+    .bg-media {
       position: fixed;
       inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .bg-media {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transform: scale(1.02); /* Tránh viền trắng khi co giãn */
+      z-index: 0;
+      pointer-events: none;
+      transform: scale(1.02);
     }
 
-    /* Lớp phủ tối (Overlay) để chữ và card nổi bật, không bị chói mắt */
+    /* Lớp phủ tối nhẹ mờ ảo chuẩn phong cách bio link */
     .bg-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.75) 100%);
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.25) 0%, rgba(5, 5, 10, 0.75) 100%);
       z-index: 1;
       pointer-events: none;
     }
 
-    /* 3. CON TRỎ CHUỘT CUSTOM */
+    /* 3. CON TRỎ CHUỘT CUSTOM (Chấm tâm & Vòng tròn bám đuổi) */
     #cursorDot {
       position: fixed;
       top: 0;
@@ -72,8 +62,8 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border: 1.5px solid rgba(255, 255, 255, 0.7);
       border-radius: 50%;
       pointer-events: none;
@@ -82,16 +72,7 @@
       transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
     }
 
-    /* Hiệu ứng khi rê chuột vào nút */
-    body.hover-active #cursorRing {
-      width: 54px;
-      height: 54px;
-      border-color: #ffffff;
-      background-color: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(2px);
-    }
-
-    /* Hạt sáng sparkle khi di chuột */
+    /* Vệt sáng sparkle khi di chuột */
     .sparkle {
       position: fixed;
       width: 4px;
@@ -101,7 +82,7 @@
       pointer-events: none;
       z-index: 99997;
       transform: translate(-50%, -50%);
-      animation: fadeSparkle 0.7s ease-out forwards;
+      animation: fadeSparkle 0.75s ease-out forwards;
     }
 
     @keyframes fadeSparkle {
@@ -111,193 +92,26 @@
       }
       100% {
         opacity: 0;
-        transform: translate(-50%, -18px) scale(0);
+        transform: translate(-50%, -16px) scale(0);
       }
-    }
-
-    /* 4. CARD ĐIỀU KHIỂN & CHỌN MẪU NỀN */
-    .control-card {
-      position: relative;
-      z-index: 10;
-      background: rgba(12, 14, 20, 0.65);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 20px;
-      padding: 28px 32px;
-      text-align: center;
-      max-width: 460px;
-      width: 90%;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-    }
-
-    .control-card h2 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      letter-spacing: 0.5px;
-    }
-
-    .control-card p {
-      font-size: 13px;
-      color: #cbd5e1;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    /* Các nút chọn nhanh nền mẫu */
-    .preset-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-bottom: 18px;
-    }
-
-    .preset-btn {
-      padding: 8px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .preset-btn:hover, .preset-btn.active {
-      background: rgba(255, 255, 255, 0.25);
-      border-color: #ffffff;
-      transform: translateY(-2px);
-    }
-
-    /* Ô nhập link tuỳ ý */
-    .custom-input-box {
-      display: flex;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .custom-input {
-      flex: 1;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(0, 0, 0, 0.4);
-      color: #ffffff;
-      font-size: 12px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .custom-input:focus {
-      border-color: #ffffff;
-    }
-
-    .custom-input::placeholder {
-      color: #64748b;
-    }
-
-    .apply-btn {
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      background: #ffffff;
-      color: #000000;
-      font-size: 12px;
-      font-weight: 700;
-      transition: all 0.2s;
-    }
-
-    .apply-btn:hover {
-      background: #e2e8f0;
-      transform: scale(1.03);
     }
   </style>
 </head>
 <body>
 
-  <!-- Con trỏ chuột Custom -->
+  <!-- NỀN VIDEO GẮN THẲNG VÀO WEB (Tự động lặp vô tận, không tiếng) -->
+  <video class="bg-media" autoplay loop muted playsinline src="https://pin.it/2NdqUZe4d"></video>
+
+  <!-- Lớp phủ bóng tối mờ ảo -->
+  <div class="bg-overlay"></div>
+
+  <!-- Con trỏ chuột -->
   <div id="cursorDot"></div>
   <div id="cursorRing"></div>
 
-  <!-- Vùng chứa nền: Hỗ trợ cả VIDEO (.mp4, .webm) lẫn GIF / Hình ảnh -->
-  <div class="bg-container" id="bgContainer">
-    <!-- Mặc định phát một đoạn video lofi mưa rơi nhẹ / anime mượt mà -->
-    <video id="bgVideo" class="bg-media" autoplay loop muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-rain-falling-on-the-water-of-a-lake-seen-up-18312-large.mp4"></video>
-    <img id="bgGif" class="bg-media" alt="Background GIF" style="display: none;">
-  </div>
-
-  <!-- Lớp phủ bóng tối mờ để card ở giữa luôn nổi bật -->
-  <div class="bg-overlay"></div>
-
-  <!-- Card nhỏ để bạn test nền và thử các loại GIF / Video -->
-  <div class="control-card">
-    <h2>🎬 Nền Video / GIF & Chuột</h2>
-    <p>Bấm chọn các mẫu bên dưới hoặc dán link video / link GIF của bạn vào để xem thử nền thay đổi ngay lập tức:</p>
-
-    <!-- Nút bấm test các kiểu nền phổ biến -->
-    <div class="preset-group">
-      <button class="preset-btn active" data-type="video" data-url="https://assets.mixkit.co/videos/preview/mixkit-rain-falling-on-the-water-of-a-lake-seen-up-18312-large.mp4">🌧️ Mưa rơi (Video)</button>
-      <button class="preset-btn" data-type="video" data-url="https://assets.mixkit.co/videos/preview/mixkit-night-sky-with-stars-at-a-calm-lake-40430-large.mp4">✨ Bầu trời sao (Video)</button>
-      <button class="preset-btn" data-type="gif" data-url="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif">🏙️ Cyberpunk (GIF)</button>
-      <button class="preset-btn" data-type="gif" data-url="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDVqbm1vd2pscGZudHRubTNmNnhkZ3IybzZub2F3bXUxcTN1ZXA4eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT9IgzoKnwFNmISR8I/giphy.gif">🌸 Anime Chill (GIF)</button>
-    </div>
-
-    <!-- Ô dán link bất kỳ -->
-    <div class="custom-input-box">
-      <input type="text" id="customUrlInput" class="custom-input" placeholder="Dán link .mp4 hoặc .gif của bạn vào đây...">
-      <button id="applyUrlBtn" class="apply-btn">Áp dụng</button>
-    </div>
-  </div>
-
   <script>
     // ==========================================
-    // 1. ĐIỀU KHIỂN NỀN VIDEO / GIF
-    // ==========================================
-    const bgVideo = document.getElementById('bgVideo');
-    const bgGif = document.getElementById('bgGif');
-    const customUrlInput = document.getElementById('customUrlInput');
-    const applyUrlBtn = document.getElementById('applyUrlBtn');
-    const presetBtns = document.querySelectorAll('.preset-btn');
-
-    function setBackground(type, url) {
-      if (!url) return;
-      if (type === 'video' || url.endsWith('.mp4') || url.endsWith('.webm')) {
-        bgGif.style.display = 'none';
-        bgVideo.style.display = 'block';
-        bgVideo.src = url;
-        bgVideo.load();
-        bgVideo.play().catch(() => {});
-      } else {
-        bgVideo.style.display = 'none';
-        bgVideo.pause();
-        bgGif.style.display = 'block';
-        bgGif.src = url;
-      }
-    }
-
-    presetBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        presetBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const type = btn.getAttribute('data-type');
-        const url = btn.getAttribute('data-url');
-        customUrlInput.value = url;
-        setBackground(type, url);
-      });
-    });
-
-    applyUrlBtn.addEventListener('click', () => {
-      const url = customUrlInput.value.trim();
-      if (!url) return;
-      presetBtns.forEach(b => b.classList.remove('active'));
-      const isVideo = url.endsWith('.mp4') || url.endsWith('.webm');
-      setBackground(isVideo ? 'video' : 'gif', url);
-    });
-
-    // ==========================================
-    // 2. CON TRỎ CHUỘT CUSTOM & VỆT SÁNG SPARKLE
+    // LOGIC CON TRỎ CHUỘT BÁM ĐUỔI & BỤI SAO
     // ==========================================
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
@@ -310,7 +124,7 @@
       mouseX = e.clientX;
       mouseY = e.clientY;
 
-      // Chấm tâm đi sát theo chuột
+      // Chấm tâm đi sát chuột
       cursorDot.style.left = mouseX + 'px';
       cursorDot.style.top = mouseY + 'px';
 
@@ -320,7 +134,7 @@
       }
     });
 
-    // Vòng tròn ngoài bám đuổi mượt mà (Lag effect)
+    // Vòng tròn ngoài bám đuổi mượt mà có độ trễ
     function renderCursor() {
       ringX += (mouseX - ringX) * 0.18;
       ringY += (mouseY - ringY) * 0.18;
@@ -329,13 +143,6 @@
       requestAnimationFrame(renderCursor);
     }
     renderCursor();
-
-    // Hiệu ứng khi rê vào các nút hoặc ô nhập liệu
-    const interactiveElements = document.querySelectorAll('button, a, input');
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
-    });
 
     // Hạt lấp lánh rơi ra từ chuột
     function createSparkle(x, y) {
@@ -349,7 +156,7 @@
 
       setTimeout(() => {
         if (sparkle.parentNode) sparkle.parentNode.removeChild(sparkle);
-      }, 700);
+      }, 750);
     }
   </script>
 </body>
