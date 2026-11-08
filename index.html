@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kietsu • luminous flow</title>
+  <title>kietsu • magnetic stardust</title>
   
   <style>
-    /* Ẩn con trỏ mặc định */
+    /* Ẩn con trỏ chuột mặc định */
     * {
       margin: 0;
       padding: 0;
@@ -15,14 +15,14 @@
     }
 
     body {
-      background-color: #000000;
+      background-color: #030305;
       min-height: 100vh;
       overflow: hidden;
       position: relative;
     }
 
-    /* CANVAS HIỆU ỨNG LUMINOUS FLOW (ĐEN & TRẮNG) */
-    #luminousCanvas {
+    /* CANVAS HẠT SÁNG HÚT VỀ CON TRỎ CHUỘT (SIÊU MƯỢT, 0% LAG) */
+    #gravityCanvas {
       position: fixed;
       inset: 0;
       width: 100%;
@@ -30,16 +30,16 @@
       z-index: 0;
     }
 
-    /* LỚP PHỦ TỐI MỜ VIỀN VIGNETTE */
+    /* LỚP PHỦ MỜ TỐI HUYỀN BÍ */
     .vignette-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+      background: radial-gradient(circle at center, transparent 40%, rgba(3, 3, 5, 0.88) 100%);
       z-index: 1;
       pointer-events: none;
     }
 
-    /* CON TRỎ CHUỘT CUSTOM TRẮNG TINH KHÔI */
+    /* CON TRỎ CHUỘT CUSTOM */
     #cursorDot {
       position: fixed;
       top: 0;
@@ -51,7 +51,7 @@
       pointer-events: none;
       z-index: 99999;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 10px #ffffff, 0 0 20px rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
     }
 
     #cursorRing {
@@ -60,16 +60,16 @@
       left: 0;
       width: 32px;
       height: 32px;
-      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.75);
       border-radius: 50%;
       pointer-events: none;
       z-index: 99998;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s;
+      transition: width 0.18s, height 0.18s;
     }
 
-    /* Hạt bụi sáng lấp lánh màu trắng */
-    .white-sparkle {
+    /* Hạt sáng bay ra từ chuột */
+    .mouse-sparkle {
       position: fixed;
       width: 3.5px;
       height: 3.5px;
@@ -78,11 +78,11 @@
       pointer-events: none;
       z-index: 99997;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 8px #ffffff;
-      animation: fadeSparkle 0.8s ease-out forwards;
+      box-shadow: 0 0 6px #ffffff;
+      animation: fadeUpSparkle 0.7s ease-out forwards;
     }
 
-    @keyframes fadeSparkle {
+    @keyframes fadeUpSparkle {
       0% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
@@ -96,21 +96,20 @@
 </head>
 <body>
 
-  <!-- Canvas Luminous Flow Effect -->
-  <canvas id="luminousCanvas"></canvas>
+  <!-- Canvas Hạt Sáng Hút Về Hướng Chuột -->
+  <canvas id="gravityCanvas"></canvas>
 
-  <!-- Lớp phủ bóng tối viền màn hình -->
   <div class="vignette-overlay"></div>
 
-  <!-- Con trỏ chuột trắng tinh khôi -->
+  <!-- Con trỏ chuột -->
   <div id="cursorDot"></div>
   <div id="cursorRing"></div>
 
   <script>
     // ==========================================
-    // 1. HIỆU ỨNG LUMINOUS FLOW EFFECT (ĐEN & TRẮNG)
+    // 1. HIỆU ỨNG HẠT SÁNG BAY VỀ PHÍA CHUỘT (MAGNETIC STARDUST)
     // ==========================================
-    const canvas = document.getElementById('luminousCanvas');
+    const canvas = document.getElementById('gravityCanvas');
     const ctx = canvas.getContext('2d');
 
     let width, height;
@@ -123,95 +122,93 @@
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
-    let targetMouseX = mouseX;
-    let targetMouseY = mouseY;
 
-    // Cấu hình các dải luồng sáng trắng (Luminous Beams)
-    const streams = [
-      { yBase: 0.22, speed: 0.007, amp1: 60, amp2: 45, freq: 0.0018, width: 3.5, glow: 35, alpha: 0.85 },
-      { yBase: 0.38, speed: 0.005, amp1: 85, amp2: 50, freq: 0.0014, width: 5.0, glow: 50, alpha: 0.95 },
-      { yBase: 0.52, speed: 0.008, amp1: 70, amp2: 60, freq: 0.0020, width: 4.0, glow: 40, alpha: 0.80 },
-      { yBase: 0.68, speed: 0.006, amp1: 95, amp2: 55, freq: 0.0016, width: 6.0, glow: 60, alpha: 0.90 },
-      { yBase: 0.82, speed: 0.009, amp1: 65, amp2: 40, freq: 0.0022, width: 3.0, glow: 30, alpha: 0.75 }
-    ];
+    const particleCount = 85;
+    const particles = [];
 
-    let time = 0;
+    class Particle {
+      constructor() {
+        this.reset(true);
+      }
 
-    function renderLuminousFlow() {
-      time++;
+      reset(randomY = false) {
+        this.x = Math.random() * width;
+        this.y = randomY ? Math.random() * height : height + Math.random() * 50;
+        this.vx = (Math.random() - 0.5) * 0.8;
+        this.vy = -(Math.random() * 1.5 + 0.8); // Hướng bay cơ bản từ dưới lên
+        this.size = Math.random() * 2.2 + 0.8;
+        this.baseAlpha = Math.random() * 0.5 + 0.3;
+        this.alpha = this.baseAlpha;
+        this.twinkleSpeed = Math.random() * 0.04 + 0.02;
+        this.twinkleAngle = Math.random() * Math.PI * 2;
+      }
 
-      // Chuột di chuyển mượt mà
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
+      update() {
+        // Tính khoảng cách và góc tới con trỏ chuột
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const dist = Math.hypot(dx, dy);
 
-      // Xóa nền đen tuyệt đối
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(0, 0, width, height);
-
-      // Chế độ hòa trộn ánh sáng phát quang (Additive blend)
-      ctx.globalCompositeOperation = 'screen';
-
-      streams.forEach((st, idx) => {
-        const centerY = st.yBase * height;
-        const phaseShift = idx * 1.5;
-
-        // Vẽ lớp hào quang tỏa sáng rộng (Soft Glow)
-        ctx.save();
-        ctx.shadowColor = '#ffffff';
-        ctx.shadowBlur = st.glow;
-        ctx.lineWidth = st.width * 2.2;
-        ctx.strokeStyle = `rgba(255, 255, 255, ${st.alpha * 0.25})`;
-        drawStreamPath(st, centerY, phaseShift);
-        ctx.stroke();
-        ctx.restore();
-
-        // Vẽ lõi luồng sáng trắng sắc nét (Sharp Core)
-        ctx.save();
-        ctx.shadowColor = '#ffffff';
-        ctx.shadowBlur = st.glow * 0.5;
-        ctx.lineWidth = st.width;
-        ctx.strokeStyle = `rgba(255, 255, 255, ${st.alpha})`;
-        drawStreamPath(st, centerY, phaseShift);
-        ctx.stroke();
-        ctx.restore();
-      });
-
-      // Trả lại chế độ vẽ bình thường
-      ctx.globalCompositeOperation = 'source-over';
-
-      requestAnimationFrame(renderLuminousFlow);
-    }
-
-    // Hàm tính toán và vẽ đường cong lượn sóng uốn lượn mượt mà
-    function drawStreamPath(st, centerY, phaseShift) {
-      ctx.beginPath();
-
-      const mouseFactorX = (mouseX / width - 0.5);
-      const mouseFactorY = (mouseY / height - 0.5);
-
-      for (let x = -50; x <= width + 50; x += 20) {
-        // Tổ hợp sóng sine và cosine tạo chuyển động đung đưa uyển chuyển tự nhiên
-        const wave1 = Math.sin(x * st.freq + time * st.speed + phaseShift) * st.amp1;
-        const wave2 = Math.cos(x * st.freq * 0.7 - time * st.speed * 0.6 + phaseShift) * st.amp2;
-
-        // Tác động uốn cong theo con trỏ chuột
-        const distFromCenter = Math.sin((x / width) * Math.PI);
-        const mouseBend = distFromCenter * mouseFactorY * 70;
-
-        const y = centerY + wave1 + wave2 + mouseBend;
-
-        if (x === -50) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
+        // Lực hút từ trường nhẹ nhàng kéo hạt bay về hướng chuột
+        if (dist > 15) {
+          const force = Math.min(2.5, 90 / Math.max(dist, 60));
+          this.vx += (dx / dist) * force * 0.06;
+          this.vy += (dy / dist) * force * 0.06;
         }
+
+        // Lực nổi nhẹ từ dưới lên
+        this.vy -= 0.04;
+
+        // Ma sát không khí giúp chuyển động mượt mà không bị văng loạn
+        this.vx *= 0.95;
+        this.vy *= 0.95;
+
+        // Cập nhật vị trí
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Hiệu ứng nhấp nháy lấp lánh
+        this.twinkleAngle += this.twinkleSpeed;
+        this.alpha = this.baseAlpha + Math.sin(this.twinkleAngle) * 0.18;
+
+        // Tái tạo lại ở đáy khi hạt bay quá gần chuột hoặc vượt ra ngoài màn hình
+        if (dist < 18 || this.y < -30 || this.x < -40 || this.x > width + 40) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        ctx.globalAlpha = Math.max(0.1, Math.min(1.0, this.alpha));
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
-    renderLuminousFlow();
+    // Khởi tạo các hạt
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      // Xóa nền đen mờ nhẹ tạo vệt chuyển động huyền ảo
+      ctx.fillStyle = '#030305';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = '#ffffff';
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      ctx.globalAlpha = 1.0;
+      requestAnimationFrame(animate);
+    }
+    animate();
 
     // ==========================================
-    // 2. CON TRỎ CHUỘT CUSTOM & VỆT SÁNG TRẮNG
+    // 2. CON TRỎ CHUỘT CUSTOM & VỆT SÁNG
     // ==========================================
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
@@ -219,36 +216,36 @@
     let ringY = mouseY;
 
     window.addEventListener('mousemove', (e) => {
-      targetMouseX = e.clientX;
-      targetMouseY = e.clientY;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
 
-      cursorDot.style.left = e.clientX + 'px';
-      cursorDot.style.top = e.clientY + 'px';
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
 
       if (Math.random() < 0.28) {
-        createWhiteSparkle(e.clientX, e.clientY);
+        createMouseSparkle(mouseX, mouseY);
       }
     });
 
     function renderCursor() {
-      ringX += (targetMouseX - ringX) * 0.18;
-      ringY += (targetMouseY - ringY) * 0.18;
+      ringX += (mouseX - ringX) * 0.2;
+      ringY += (mouseY - ringY) * 0.2;
       cursorRing.style.left = ringX + 'px';
       cursorRing.style.top = ringY + 'px';
       requestAnimationFrame(renderCursor);
     }
     renderCursor();
 
-    function createWhiteSparkle(x, y) {
+    function createMouseSparkle(x, y) {
       const sp = document.createElement('div');
-      sp.className = 'white-sparkle';
-      sp.style.left = (x + (Math.random() - 0.5) * 8) + 'px';
+      sp.className = 'mouse-sparkle';
+      sp.style.left = (x + (Math.random() - 0.5) * 6) + 'px';
       sp.style.top = y + 'px';
       document.body.appendChild(sp);
 
       setTimeout(() => {
         if (sp.parentNode) sp.parentNode.removeChild(sp);
-      }, 780);
+      }, 700);
     }
   </script>
 </body>
