@@ -6,7 +6,6 @@
   <title>kietsu • profile</title>
   
   <style>
-    /* 1. Ẩn con trỏ mặc định */
     * {
       margin: 0;
       padding: 0;
@@ -21,20 +20,26 @@
       position: relative;
     }
 
-    /* 2. NỀN VIDEO TỰ ĐỘNG CHẠY FILE bg.mp4 NẰM CÙNG THƯ MỤC TRÊN GITHUB */
-    .bg-media {
+    /* VÙNG CHỨA NỀN TOÀN MÀN HÌNH */
+    .bg-container {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-media {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
-      z-index: 0;
-      pointer-events: none;
       transform: scale(1.02);
     }
 
-    /* Lớp phủ mờ tối thẩm mỹ chuẩn bio link */
+    /* Lớp phủ tối mờ ảo chuẩn biolink */
     .bg-overlay {
       position: fixed;
       inset: 0;
@@ -43,7 +48,7 @@
       pointer-events: none;
     }
 
-    /* 3. CON TRỎ CHUỘT CUSTOM (Chấm tâm & Vòng tròn bám đuổi) */
+    /* CON TRỎ CHUỘT CUSTOM */
     #cursorDot {
       position: fixed;
       top: 0;
@@ -64,15 +69,14 @@
       left: 0;
       width: 32px;
       height: 32px;
-      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.75);
       border-radius: 50%;
       pointer-events: none;
       z-index: 99998;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
+      transition: width 0.2s, height 0.2s;
     }
 
-    /* Vệt sáng sparkle khi di chuột */
     .sparkle {
       position: fixed;
       width: 4px;
@@ -86,33 +90,25 @@
     }
 
     @keyframes fadeSparkle {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -16px) scale(0);
-      }
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -16px) scale(0); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Video nền tự gọi file bg.mp4 của bạn -->
-  <video id="bgVideo" class="bg-media" autoplay loop muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-rain-falling-on-the-water-of-a-lake-seen-up-18312-large.mp4"></video>
+  <!-- NỀN WEB ONLINE 100% (Link trực tiếp từ web, không bao giờ bị lỗi đen) -->
+  <div class="bg-container">
+    <img class="bg-media" src="https://pin.it/5TuDdH1FO" alt="Background">
+  </div>
 
-  <!-- Lớp phủ bóng tối mờ ảo -->
   <div class="bg-overlay"></div>
 
-  <!-- Con trỏ chuột Custom -->
+  <!-- Con trỏ chuột -->
   <div id="cursorDot"></div>
   <div id="cursorRing"></div>
 
   <script>
-    // ==========================================
-    // LOGIC CON TRỎ CHUỘT BÁM ĐUỔI & BỤI SAO
-    // ==========================================
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
     let mouseX = window.innerWidth / 2;
@@ -123,18 +119,14 @@
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-
-      // Chấm tâm đi sát chuột
       cursorDot.style.left = mouseX + 'px';
       cursorDot.style.top = mouseY + 'px';
 
-      // Tạo hạt lấp lánh nhẹ nhàng khi di chuột
       if (Math.random() < 0.25) {
         createSparkle(mouseX, mouseY);
       }
     });
 
-    // Vòng tròn ngoài bám đuổi mượt mà có độ trễ
     function renderCursor() {
       ringX += (mouseX - ringX) * 0.18;
       ringY += (mouseY - ringY) * 0.18;
@@ -143,16 +135,7 @@
       requestAnimationFrame(renderCursor);
     }
     renderCursor();
-    // Khi chạy trên GitHub / Cloudflare Pages, tự động ưu tiên file video bg.mp4 của bạn
-    const video = document.getElementById('bgVideo');
-    if (window.location.protocol !== 'blob:' && window.location.protocol !== 'about:') {
-      const testVideo = document.createElement('video');
-      testVideo.src = 'bg.mp4';
-      testVideo.oncanplay = () => { video.src = 'bg.mp4'; };
-    }
 
-
-    // Hạt lấp lánh rơi ra từ chuột
     function createSparkle(x, y) {
       const sparkle = document.createElement('div');
       sparkle.className = 'sparkle';
@@ -161,7 +144,6 @@
       sparkle.style.width = (Math.random() * 3 + 2) + 'px';
       sparkle.style.height = sparkle.style.width;
       document.body.appendChild(sparkle);
-
       setTimeout(() => {
         if (sparkle.parentNode) sparkle.parentNode.removeChild(sparkle);
       }, 750);
