@@ -2,17 +2,29 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kaisu • profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=0.85">
   
-  <!-- Font Awesome & Google Fonts -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- FAVICON MẶT TRĂNG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+
+  <!-- OPEN GRAPH EMBED TAGS (HIỂN THỊ CARD XỊN SÒ TRÊN DISCORD & FACEBOOK) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="kaisu">
+  <meta property="og:description" content="link in bio service | kaisu">
+  <meta property="og:image" content="https://media1.tenor.com/m/B3K_YPnNyucAAAAd/porsche-911.gif">
+  <meta property="og:url" content="https://kietcackieu.pages.dev">
+  <meta name="theme-color" content="#5865F2">
+
+  <!-- FONTS & ICONS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
+  <title>kaisu</title>
+
   <style>
-    /* Ẩn con trỏ mặc định */
+    /* 1. Ẩn toàn bộ con trỏ mặc định để dùng chuột custom */
     * {
       margin: 0;
       padding: 0;
@@ -23,7 +35,7 @@
     body {
       background-color: #030305;
       color: #ffffff;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -33,7 +45,7 @@
       perspective: 1000px;
     }
 
-    /* CANVAS HẠT SÁNG HÚT THEO CHUỘT (CHILL & 0% LAG) */
+    /* 2. CANVAS HẠT SÁNG HÚT THEO HƯỚNG CHUỘT (MAGNETIC STARDUST - 0% LAG) */
     #gravityCanvas {
       position: fixed;
       inset: 0;
@@ -52,34 +64,34 @@
       pointer-events: none;
     }
 
-    /* ==================== CARD PROFILE CHÍNH (NGHIÊNG 3D THEO CHUỘT) ==================== */
+    /* 3. CARD PROFILE TỐI GIẢN SIÊU ĐẸP (3D TILT EFFECT) */
     .profile-card {
       position: relative;
       z-index: 10;
-      width: 360px;
+      width: 350px;
       max-width: 90vw;
-      background: rgba(14, 16, 24, 0.72);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(14, 16, 24, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 28px;
-      padding: 34px 26px;
+      padding: 38px 28px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
-      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255, 255, 255, 0.03);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.92), inset 0 0 20px rgba(255, 255, 255, 0.04);
       transform-style: preserve-3d;
       transition: transform 0.15s ease-out, border-color 0.25s, box-shadow 0.25s;
     }
 
     .profile-card:hover {
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.32);
       box-shadow: 0 35px 70px -10px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.08);
     }
 
-    /* KHUNG AVATAR ĐÃ THU NHỎ TRỌN VẸN TOÀN BỘ KHUÔN MẶT */
+    /* AVATAR TRÒN THU NHỎ VỪA VẶN TRỌN VẸN KHUÔN MẶT */
     .avatar-wrapper {
       position: relative;
       width: 106px;
@@ -90,7 +102,7 @@
       overflow: hidden;
       padding: 2.5px;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2));
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
       transform: translateZ(25px);
       display: flex;
       align-items: center;
@@ -110,7 +122,7 @@
 
     /* TÊN HIỂN THỊ kaisu PHÁT SÁNG */
     .profile-name {
-      font-size: 26px;
+      font-size: 27px;
       font-weight: 800;
       letter-spacing: 0.5px;
       color: #ffffff;
@@ -128,6 +140,13 @@
       filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.6));
     }
 
+    .profile-bio {
+      font-size: 13px;
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+      transform: translateZ(18px);
+    }
+
     /* NÚT JOIN SERVER DISCORD */
     .btn-discord {
       display: flex;
@@ -135,7 +154,7 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 13px 20px;
+      padding: 14px 20px;
       background: #5865F2;
       color: #ffffff;
       font-size: 14px;
@@ -146,7 +165,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       transform: translateZ(28px);
       transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .btn-discord:hover {
@@ -159,7 +178,7 @@
       font-size: 18px;
     }
 
-    /* CON TRỎ CHUỘT CUSTOM */
+    /* 4. CON TRỎ CHUỘT CUSTOM */
     #cursorDot {
       position: fixed;
       top: 0;
@@ -213,6 +232,23 @@
       0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
       100% { opacity: 0; transform: translate(-50%, -20px) scale(0.2); }
     }
+
+    /* GỢN SÓNG NƯỚC KHI CLICK */
+    .ripple-circle {
+      position: absolute;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      pointer-events: none;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 100%);
+      animation: waterRipple 0.85s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+      z-index: 9999;
+    }
+
+    @keyframes waterRipple {
+      0% { width: 0; height: 0; opacity: 0.9; transform: translate(-50%, -50%) scale(0); }
+      100% { width: 320px; height: 320px; opacity: 0; transform: translate(-50%, -50%) scale(1); }
+    }
   </style>
 </head>
 <body>
@@ -221,13 +257,13 @@
   <canvas id="gravityCanvas"></canvas>
   <div class="vignette-overlay"></div>
 
-  <!-- ==================== PROFILE CARD CHÍNH ==================== -->
+  <!-- ==================== PROFILE CARD CHÍNH TỐI GIẢN ==================== -->
   <div id="profileCard" class="profile-card">
     
     <!-- 1. AVATAR THU NHỎ TRỌN VẸN KHUÔN MẶT, MẮT VÀ TAY -->
     <div class="avatar-wrapper">
-     <img src="https://tse4.mm.bing.net/th/id/OIP.nf4kSleL1zj3tRNJg_fx5AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
-    </div>
+      <img src="https://tse4.mm.bing.net/th/id/OIP.nf4kSleL1zj3tRNJg_fx5AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
+      </div>
 
     <!-- 2. TÊN kaisu KÈM TÍCH XANH -->
     <h1 class="profile-name">
@@ -235,7 +271,10 @@
       <i class="fa-solid fa-circle-check verified-badge" title="Verified Creator"></i>
     </h1>
 
-    <!-- 3. NÚT JOIN DISCORD SERVER CỦA BẠN -->
+    <!-- 3. DÒNG BIO QUOTE -->
+    <p class="profile-bio">đến là đón đụng là chạm 💀🔥</p>
+
+    <!-- 4. NÚT JOIN DISCORD SERVER CỦA BẠN -->
     <a href="https://discord.gg/8eBC2K4M3M" target="_blank" rel="noopener noreferrer" class="btn-discord" id="discordJoinBtn">
       <i class="fa-brands fa-discord"></i>
       <span>Tham gia Discord của tôi</span>
@@ -249,7 +288,48 @@
 
   <script>
     // ==========================================
-    // 1. HIỆU ỨNG NGHIÊNG 3D CARD KHI DI CHUỘT
+    // 1. HIỆU ỨNG GÕ CHỮ TRÊN TIÊU ĐỀ TAB TRÌNH DUYỆT (ANIMATED TAB TITLE)
+    // ==========================================
+    function animateTabTitle() {
+      const originalTitle = 'kaisu';
+      let index = 0;
+      let isDeleting = false;
+
+      setInterval(function () {
+        if (!isDeleting) {
+          index++;
+          document.title = originalTitle.substring(0, index);
+          if (index === originalTitle.length) {
+            isDeleting = true;
+          }
+        } else {
+          index--;
+          document.title = originalTitle.substring(0, index) || '‎';
+          if (index === 0) {
+            isDeleting = false;
+          }
+        }
+      }, 350);
+    }
+    animateTabTitle();
+
+    // ==========================================
+    // 2. GỢN SÓNG NƯỚC KHI CLICK
+    // ==========================================
+    function createRipple(x, y) {
+      const r = document.createElement('div');
+      r.className = 'ripple-circle';
+      r.style.left = x + 'px';
+      r.style.top = y + 'px';
+      document.body.appendChild(r);
+      setTimeout(() => {
+        if (r.parentNode) r.parentNode.removeChild(r);
+      }, 900);
+    }
+    document.body.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
+
+    // ==========================================
+    // 3. HIỆU ỨNG NGHIÊNG 3D CARD KHI DI CHUỘT
     // ==========================================
     const card = document.getElementById('profileCard');
 
@@ -257,14 +337,14 @@
       const xRatio = (e.clientX / window.innerWidth) - 0.5;
       const yRatio = (e.clientY / window.innerHeight) - 0.5;
 
-      const rotY = xRatio * 16;  // Nghiêng tối đa 8 độ
+      const rotY = xRatio * 16;
       const rotX = -yRatio * 16;
 
       card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
     });
 
     // ==========================================
-    // 2. HIỆU ỨNG HẠT SÁNG HÚT VỀ CON TRỎ CHUỘT
+    // 4. HIỆU ỨNG HẠT SÁNG HÚT VỀ CON TRỎ CHUỘT (MAGNETIC STARDUST)
     // ==========================================
     const canvas = document.getElementById('gravityCanvas');
     const ctx = canvas.getContext('2d');
@@ -354,7 +434,7 @@
     animate();
 
     // ==========================================
-    // 3. CON TRỎ CHUỘT CUSTOM MƯỢT MÀ
+    // 5. CON TRỎ CHUỘT CUSTOM MƯỢT MÀ
     // ==========================================
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
