@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kietsu • profile</title>
+  <title>kaisu • profile</title>
   
   <!-- Font Awesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   
   <style>
     /* Ẩn con trỏ mặc định */
@@ -47,7 +47,7 @@
     .vignette-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, transparent 30%, rgba(3, 3, 5, 0.9) 100%);
+      background: radial-gradient(circle at center, transparent 35%, rgba(3, 3, 5, 0.9) 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -56,19 +56,19 @@
     .profile-card {
       position: relative;
       z-index: 10;
-      width: 380px;
+      width: 360px;
       max-width: 90vw;
-      background: rgba(14, 16, 24, 0.65);
+      background: rgba(14, 16, 24, 0.7);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 28px;
-      padding: 38px 28px;
+      padding: 34px 26px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
+      gap: 16px;
       box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255, 255, 255, 0.03);
       transform-style: preserve-3d;
       transition: transform 0.15s ease-out, border-color 0.25s, box-shadow 0.25s;
@@ -76,32 +76,43 @@
 
     .profile-card:hover {
       border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 35px 70px -10px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.06);
+      box-shadow: 0 35px 70px -10px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.08);
     }
 
-    /* AVATAR TRÒN VIỀN PHÁT SÁNG */
+    /* KHUNG AVATAR TRÒN CỐ ĐỊNH KÍCH THƯỚC (KHÔNG BAO GIỜ BỊ TRÀN HAY VỠ HÌNH) */
     .avatar-wrapper {
       position: relative;
-      width: 100px;
-      height: 100px;
+      width: 96px;
+      height: 96px;
+      min-width: 96px;
+      min-height: 96px;
       border-radius: 50%;
+      overflow: hidden !important; /* Khóa chặt không cho ảnh tràn */
       padding: 2.5px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.15));
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2));
       box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
-      transform: translateZ(25px); /* Nổi 3D */
+      transform: translateZ(25px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .avatar-img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      object-position: center !important;
+      display: block !important;
       background: #000000;
     }
 
-    /* TÊN HIỂN THỊ PHÁT SÁNG (GLOW TITLE) */
+    /* TÊN HIỂN THỊ kaisu PHÁT SÁNG */
     .profile-name {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       letter-spacing: 0.5px;
       color: #ffffff;
@@ -119,15 +130,15 @@
       filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.6));
     }
 
-    /* NÚT JOIN SERVER DISCORD SIÊU ĐẸP */
+    /* NÚT JOIN SERVER DISCORD */
     .btn-discord {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 14px 20px;
-      background: #5865F2; /* Màu Discord nguyên bản */
+      padding: 13px 20px;
+      background: #5865F2;
       color: #ffffff;
       font-size: 14px;
       font-weight: 700;
@@ -137,7 +148,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       transform: translateZ(28px);
       transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .btn-discord:hover {
@@ -171,7 +182,7 @@
       left: 0;
       width: 32px;
       height: 32px;
-      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.75);
       border-radius: 50%;
       pointer-events: none;
       z-index: 99998;
@@ -215,12 +226,12 @@
   <!-- ==================== PROFILE CARD CHÍNH ==================== -->
   <div id="profileCard" class="profile-card">
     
-    <!-- 1. AVATAR -->
+    <!-- 1. AVATAR TRÒN GỌN GÀNG (ĐÃ CỐ ĐỊNH KÍCH THƯỚC) -->
     <div class="avatar-wrapper">
-      <img src="https://tse4.mm.bing.net/th/id/OIP.nf4kSleL1zj3tRNJg_fx5AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.nf4kSleL1zj3tRNJg_fx5AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">    
     </div>
 
-    <!-- 2. TÊN -->
+    <!-- 2. TÊN kaisu KÈM TÍCH XANH -->
     <h1 class="profile-name">
       <span>kaisu</span>
       <i class="fa-solid fa-circle-check verified-badge" title="Verified Creator"></i>
@@ -248,9 +259,8 @@
       const xRatio = (e.clientX / window.innerWidth) - 0.5;
       const yRatio = (e.clientY / window.innerHeight) - 0.5;
 
-      // Độ nghiêng mượt mà tinh tế
-      const rotY = xRatio * 16;  // Nghiêng tối đa 8 độ sang trái/phải
-      const rotX = -yRatio * 16; // Nghiêng tối đa 8 độ lên/xuống
+      const rotY = xRatio * 16;  // Nghiêng tối đa 8 độ
+      const rotX = -yRatio * 16;
 
       card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
     });
@@ -374,7 +384,6 @@
     }
     renderCursor();
 
-    // Hover effect vào nút Discord
     const discordBtn = document.getElementById('discordJoinBtn');
     discordBtn.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
     discordBtn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
