@@ -6,7 +6,7 @@
   <title>kietsu • profile</title>
   
   <style>
-    /* 1. Ẩn toàn bộ con trỏ mặc định */
+    /* 1. Ẩn con trỏ mặc định */
     * {
       margin: 0;
       padding: 0;
@@ -21,7 +21,7 @@
       position: relative;
     }
 
-    /* 2. NỀN VIDEO / GIF GẮN THẲNG TOÀN MÀN HÌNH */
+    /* 2. NỀN VIDEO TỰ ĐỘNG CHẠY FILE bg.mp4 NẰM CÙNG THƯ MỤC TRÊN GITHUB */
     .bg-media {
       position: fixed;
       inset: 0;
@@ -34,7 +34,7 @@
       transform: scale(1.02);
     }
 
-    /* Lớp phủ tối nhẹ mờ ảo chuẩn phong cách bio link */
+    /* Lớp phủ mờ tối thẩm mỹ chuẩn bio link */
     .bg-overlay {
       position: fixed;
       inset: 0;
@@ -99,13 +99,13 @@
 </head>
 <body>
 
-  <!-- NỀN VIDEO GẮN THẲNG VÀO WEB (Tự động lặp vô tận, không tiếng) -->
-  <video class="bg-media" autoplay loop muted playsinline src="https://www.pinterest.com/pin/661466264065779370/"></video>
+  <!-- Video nền tự gọi file bg.mp4 của bạn -->
+  <video id="bgVideo" class="bg-media" autoplay loop muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-rain-falling-on-the-water-of-a-lake-seen-up-18312-large.mp4"></video>
 
   <!-- Lớp phủ bóng tối mờ ảo -->
   <div class="bg-overlay"></div>
 
-  <!-- Con trỏ chuột -->
+  <!-- Con trỏ chuột Custom -->
   <div id="cursorDot"></div>
   <div id="cursorRing"></div>
 
@@ -143,6 +143,14 @@
       requestAnimationFrame(renderCursor);
     }
     renderCursor();
+    // Khi chạy trên GitHub / Cloudflare Pages, tự động ưu tiên file video bg.mp4 của bạn
+    const video = document.getElementById('bgVideo');
+    if (window.location.protocol !== 'blob:' && window.location.protocol !== 'about:') {
+      const testVideo = document.createElement('video');
+      testVideo.src = 'bg.mp4';
+      testVideo.oncanplay = () => { video.src = 'bg.mp4'; };
+    }
+
 
     // Hạt lấp lánh rơi ra từ chuột
     function createSparkle(x, y) {
